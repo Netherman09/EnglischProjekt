@@ -1,29 +1,27 @@
 <html>
   <head>
-    
-    <link rel="stylesheet" href="style.css">
-    
     <title>Englisch Website</title>
-
+    <link rel="stylesheet" href="style.css">
     <script>
-
-
-
+      window.onload = function LoadTopBar() {
+        alert("Test")
+        fetch('topBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('topBar').innerHTML = data;
+        });
+      }    
     </script>
   </head>
   <body>
-
-      <div>     <! TopBar>
-
-          <button>Card</button>
-          <button>Brexit</button>
-          <button>Immigrands</button>
-
+      <div id="topBar">     <!--TopBar-->
       </div>   
       <div>
 
 
-
+<button>Cultural Map</button>
+          <button>Brexit</button>
+          <button>Immigration</button>
       </div>
 
     <h1>Erster Test</h1>
