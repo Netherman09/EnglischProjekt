@@ -12,6 +12,11 @@
     margin-bottom: 0px;
     margin-left: 20px;
     margin-right: 20px;
+    transition: background-color 0.2s;
+}
+
+.red_button:hover {
+    background-color: #ee0d33;
 }
 
 .topbar {
@@ -24,6 +29,11 @@
     justify-content: center;
     align-items: stretch;
     height: 40px;
+}
+
+.dropdown_flex {
+    display: flex;
+    flex-direction: column;
 }
 
 .no_margin {
