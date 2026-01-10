@@ -1,0 +1,65 @@
+<html>
+    
+  <head>
+    <title>Cultural Map</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      window.onload = function LoadTopBar() {
+        fetch('topBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('topBarID').innerHTML = data;
+        });
+      }    
+    </script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
+    </script>
+  </head>
+  <body class="no_margin">
+      <div id="topBarID">     <!--TopBar-->
+      </div>   
+    <h1>Immigration</h1>
+
+    <!--Die Werte des Diagramms sind aktuell nur Platzhalter Werte-->
+    <p>Alles aktuell Platzhalterwerte</p>
+
+    <canvas id="myChart" style="width:100%; max-width: 500px; max-height: 500px;"></canvas>
+
+    <script>
+        const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        const yValues = [55, 49, 44, 24, 15];
+        const barColors = [
+            "#b91d47",
+            "#00aba9",
+            "#2b5797",
+            "#e8c3b9",
+            "#1e7145"
+        ];
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                plugins: {
+                legend: {display:true},
+                title: {
+                    display: true,
+                    text: "World Wine Production 2018",
+                    font: {size:16}
+            }
+            }
+        }
+        });
+        </script>
+  </body>
+</html>
