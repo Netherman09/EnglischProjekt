@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Cultural Map</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      window.onload = function LoadTopBar() {
+        fetch('topBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('topBarID').innerHTML = data;
+        });
+      }    
+    </script>
+  </head>
+  <body class="no_margin">
+      <div id="topBarID">     <!--TopBar-->
+      </div>   
+    <h1>Brexit</h1>
+  </body>
+</html>
