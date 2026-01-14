@@ -3,18 +3,24 @@
     <title>Englisch Website</title>
     <link rel="stylesheet" href="style.css">
     <script>
-      window.onload = function LoadTopBar() {
+      window.onload = function LoadBars() {
         fetch('topBar.html')
         .then(response => response.text())
         .then(data => {
         document.getElementById('topBarID').innerHTML = data;
         });
-      }    
+
+        fetch('bottomBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('bottomBarID').innerHTML = data;
+        });
+      }
     </script>
   </head>
   <body class="no_margin">
-      <div id="topBarID">     <!--TopBar-->
-      </div>   
+      <div id="topBarID"></div>     <!--TopBar-->   
     <h1>Startseite</h1>
+      <div id="bottomBarID"></div>
   </body>
 </html>

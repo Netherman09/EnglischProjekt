@@ -19,7 +19,13 @@
 
 .topbar {
     height: 120px;
-    ;
+    background-color: #012169;
+    padding-top: 10px;
+}
+
+.bottombar {
+    height: 120px;
+    
     background-color: #012169;
     padding-top: 10px;
 }
