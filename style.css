@@ -38,9 +38,19 @@
     height: 40px;
 }
 
-.dropdown_flex {
+.align_horizontal {
     display: flex;
-    flex-direction: column;
+    align-items: stretch;
+}
+
+.align_vertical {
+    display: flex;
+    align-items: stretch;
+}
+
+.align_right {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .no_margin {
@@ -59,4 +69,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.normal_text_size {
+    font-size: 20px;
+}
+
+.default_font_family {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.box_with_space_left {
+    margin-left: 30px; 
+    margin-right: 40%; 
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 5px;
+    padding-top: 1px;
+    border-radius: 12px;
+}
+
+.box_with_space_right {
+    margin-right: 30px; 
+    margin-left: 40%; 
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 5px;
+    padding-top: 1px;
+    border-radius: 12px;
 }
