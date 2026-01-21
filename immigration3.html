@@ -1,0 +1,181 @@
+<html>
+    
+  <head>
+    <title>Immigration</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      window.onload = function LoadTopBar() {
+        fetch('topBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('topBarID').innerHTML = data;
+        });
+
+      fetch('bottomBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('bottomBarID').innerHTML = data;
+        });
+      }    
+    </script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
+    </script>
+
+    <style>
+        :root {
+            --accent-red: #ee0d33;
+        }
+
+        .box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .info_box {
+            background-color: rgba(238, 13, 51, 0.075);
+            border-left: 4px solid var(--accent-red);
+            padding: 15px;
+            margin-right: 40px;
+            font-style: italic;
+        }
+
+        .country-card {
+            background: #fff;
+            border-top: solid;
+            border-radius: 12px;
+            border-color: 5px solid red;
+            
+            overflow: hidden;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            transition: transform 0.3s ease;
+        }
+
+        .country-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            height: 180px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .flag-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent-red);
+            color: white;
+            padding: 5px 12px;
+            font-weight: bold;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+    </style>
+  </head>
+  <body class="no_margin normal_text_size default_font_family" style="background-color: #f1f5ff">
+      <div id="topBarID"></div>  <!--TopBar--> 
+
+      <main class="normal_center">
+        <h1>Immigration in the UK</h1>
+        <div class="box" style="display: flex; flex-direction: row; padding: 20px;">
+            <canvas id="myChart" style="width:100%; max-width: 400px; max-height: 400px;"></canvas>
+            <div style="margin-left: 30px;">
+                <div>
+                    <h1>The 5 largest Groups of Immigrants</h1>
+                    <p>Great Britain has a long History and something just like this
+                        I think. I dont actually know how to write this. I am pretty
+                        shure Max already complained about writing history with an capital H.
+                    </p>
+
+                    <p class="info_box">
+                        This is an infobox with some info in it. Or at least I hope
+                        so. No but seriously. Okay the second line also seems to be
+                        working
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="grid" style="margin-top: 40px;">
+            <article class="country-card">
+                <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=80');">
+                    <span class="flag-badge">Indien</span>
+                </div>
+                <div class="card-content">
+                    <h3>Indien</h3>
+                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
+                    <p>Kulinarisch ist die indische Kultur fest etabliert – Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
+                    <div class="stats-row">
+                        <span>Anteil:</span>
+                        <span>~9.3%</span>
+                    </div>
+                </div>
+            </article>
+            <div class="country-card">Hey</div>
+            <div class="country-card">Hallo</div>
+            <div class="country-card">Guten Tag</div>
+            <div class="country-card">Hi</div>
+            <div class="country-card">Hey</div>
+        </div>
+      </main>
+
+      <div id="bottomBarID"></div>
+      <!--Code für den Pie Chart (NICHT ANFASSEN!)-->
+      <script>
+        const xValues = ["India", "Poland", "Pakistan", "Romania", "Ireland"];
+        const yValues = [965000, 841000, 654000, 558000, 387000];
+        const barColors = [
+            "#FF9933",
+            "#DC143C",
+            "#01411C",
+            "#002B7F",
+            "#169B62"
+        ];
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                plugins: {
+                legend: {display:true},
+                title: {
+                    display: true,
+                    text: "The 5 largest Groups of Immigrants",
+                    font: {size:16}
+            }
+            }
+        }
+        });
+        </script>
+  </body>
+</html>
