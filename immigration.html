@@ -22,6 +22,33 @@
     <script
         src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
     </script>
+
+    <style>
+      .long_button {
+        text-align: right;
+        background-color: #c8102e;
+        width: 40%;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 18px;
+        color: #000000;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        transition: background-color 0.3s, font-size 0.3s;
+        display: flex;
+        flex-direction: column 1;
+        justify-content: space-evenly;
+      }
+
+    .long_button:hover {
+    background-color: #ee0d33;
+    font-size: 19px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+    </style>
   </head>
   <body class="no_margin">
       <div id="topBarID">     <!--TopBar-->
@@ -29,14 +56,14 @@
     <h1>Immigration</h1>
 
     <!--Max fragt ob die Ansicht auch smooth runterscrollen könnte wenn man auf einen Button klickt anstatt dieses teleportieren-->
-    <div class="align_horizontal">
+    <div class="align_horizontal" style="width: 100%; height: fit-content;">
       <canvas id="myChart" style="width:100%; max-width: 500px; max-height: 500px;"></canvas>
-      <div>
-        <button onclick="location.href='#india'">India</button>
-        <button onclick="location.href='#poland'">Poland</button>
-        <button onclick="location.href='#pakistan'">Pakistan</button>
-        <button onclick="location.href='#romania'">Romania</button>
-        <button onclick="location.href='#ireland'">Ireland</button>
+      <div style="width:40%; height: 100%;">
+        <button class="long_button" style="background-color: #ffe3c7;" onclick="location.href='#india'">India</button>
+        <button class="long_button" style="background-color: #ffc2ce;" onclick="location.href='#poland'">Poland</button>
+        <button class="long_button" style="background-color: #7b9e8a;" onclick="location.href='#pakistan'">Pakistan</button>
+        <button class="long_button" style="background-color: #9eb3da;" onclick="location.href='#romania'">Romania</button>
+        <button class="long_button" style="background-color: #169B62;" onclick="location.href='#ireland'">Ireland</button>
       </div>
     </div>
     
@@ -45,12 +72,7 @@
       <div class="align_horizontal">
         <div id="india" class="default_font_family box_with_space_left" style="background-color: #ffe3c7; margin-top: 120px;">
         <h1>India</h1>
-        <p class="normal_text_size">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
-          labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
-          et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem 
-          ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et 
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+        <p class="normal_text_size">India is the country with the most immigrants within the United Kingdom. Almost a million came to the UK due to better job/degree opportunities. In the way the British look at them, with a positive look, that’s due to their good integration, and they are a big part of our economy. Most of the immigrants from India are working in a kind of similar field of work, which is most of the time medicine, economics, or the real estate market. So for the Indian, it was important to bring a part of their culture to our country not only with their religion and cultural spirit but also with their diverse cuisine with established food, like tika masala or samosas, and now the Indian culture is now in some way part of our culture
           </p>
         </div>
         <img src="https://picsum.photos/300/300">

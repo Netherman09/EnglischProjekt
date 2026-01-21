@@ -45,7 +45,7 @@
 
 .align_vertical {
     display: flex;
-    align-items: stretch;
+    flex-direction: column 1;
 }
 
 .align_right {
