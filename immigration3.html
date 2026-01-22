@@ -44,15 +44,14 @@
             background-color: rgba(238, 13, 51, 0.075);
             border-left: 4px solid var(--accent-red);
             padding: 15px;
-            margin-right: 40px;
             font-style: italic;
         }
 
         .country-card {
-            background: #fff;
-            border-top: solid;
+            background: #ffffff;
+            border-top: 4px solid var(--primary-blue);
             border-radius: 12px;
-            border-color: 5px solid red;
+
             
             overflow: hidden;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -69,6 +68,10 @@
             background-size: cover;
             background-position: center;
             position: relative;
+        }
+
+        .card-content {
+            margin: 20px;
         }
 
         .flag-badge {
@@ -93,14 +96,24 @@
             font-weight: bold;
             color: var(--primary-blue);
         }
+
+        .underline {
+            border: none;
+            border-bottom: 3px solid red;
+            border-width: 3px;
+        }
+
+        .underline:hover {
+            
+        }
     </style>
   </head>
-  <body class="no_margin normal_text_size default_font_family" style="background-color: #f1f5ff">
+  <body class="no_margin normal_text_size default_font_family" style="background-color: #f4f7f9">
       <div id="topBarID"></div>  <!--TopBar--> 
 
       <main class="normal_center">
         <h1>Immigration in the UK</h1>
-        <div class="box" style="display: flex; flex-direction: row; padding: 20px;">
+        <div class="box" style="display: flex; flex-direction: row; padding: 30px;">
             <canvas id="myChart" style="width:100%; max-width: 400px; max-height: 400px;"></canvas>
             <div style="margin-left: 30px;">
                 <div>
@@ -124,17 +137,54 @@
                     <span class="flag-badge">Indien</span>
                 </div>
                 <div class="card-content">
-                    <h3>Indien</h3>
+                    <h3 style="color: var(--primary-blue);">Indien</h3>
                     <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
                     <p>Kulinarisch ist die indische Kultur fest etabliert – Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
                     <div class="stats-row">
                         <span>Anteil:</span>
                         <span>~9.3%</span>
                     </div>
+                    <div class="stats-row">
+                        <button class="underline">Learn More</button>
+                    </div>
                 </div>
             </article>
-            <div class="country-card">Hey</div>
-            <div class="country-card">Hallo</div>
+            
+            <article class="country-card">
+                <div class="card-image" style="background-image: url('https://www.reisen-und-tipps.de/Laender/Polen/Staedte/Bilder/Staedte-Polen.jpg?auto=format&fit=crop&w=600&q=80');">
+                    <span class="flag-badge">Poland</span>
+                </div>
+                <div class="card-content">
+                    <h3 style="color: var(--primary-blue);">Poland</h3>
+                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
+                    <p>Kulinarisch ist die indische Kultur fest etabliert – Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
+                    <div class="stats-row">
+                        <span>Anteil:</span>
+                        <span>~9.3%</span>
+                    </div>
+                    <div class="stats-row">
+                        <button class="underline">Learn More</button>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="country-card">
+                <div class="card-image" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJNcK-MUzMpmK-C8FsOJB__iKNXVSpuXPCqA&s?auto=format&fit=crop&w=600&q=80');">
+                    <span class="flag-badge">Romania</span>
+                </div>
+                <div class="card-content">
+                    <h3 style="color: var(--primary-blue);">Romania</h3>
+                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
+                    <p>Kulinarisch ist die indische Kultur fest etabliert – Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
+                    <div class="stats-row">
+                        <span>Anteil:</span>
+                        <span>~9.3%</span>
+                    </div>
+                    <div class="stats-row">
+                        <button class="underline">Learn More</button>
+                    </div>
+                </div>
+            </article>
             <div class="country-card">Guten Tag</div>
             <div class="country-card">Hi</div>
             <div class="country-card">Hey</div>

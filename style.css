@@ -1,3 +1,7 @@
+:root {
+    --primary-blue:#012169;
+}
+
 .red_button {
     background-color: #c8102e;
     width: 140px;
@@ -78,7 +82,7 @@
 
 .normal_center {
     margin: auto;
-    width: 60%;
+    width: 70%;
     max-width: 1100px;
     min-width: 600px;
 }
