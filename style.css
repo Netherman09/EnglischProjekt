@@ -1,9 +1,11 @@
 :root {
     --primary-blue:#012169;
+    --accent-red: #c8102e;
+    --light-accent-red: #ee0d33;
 }
 
 .red_button {
-    background-color: #c8102e;
+    background-color: var(--accent-red);
     width: 140px;
     border: none;
     border-radius: 5px;
@@ -18,7 +20,7 @@
 }
 
 .red_button:hover {
-    background-color: #ee0d33;
+    background-color: var(--light-accent-red);
     font-size: 19px;
 }
 

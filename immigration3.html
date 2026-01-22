@@ -1,231 +1,553 @@
 <html>
-    
   <head>
     <title>Immigration</title>
-    <link rel="stylesheet" href="style.css">
-    <script>
-      window.onload = function LoadTopBar() {
-        fetch('topBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('topBarID').innerHTML = data;
-        });
+    <link rel="stylesheet" href="style.css" />
 
-      fetch('bottomBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('bottomBarID').innerHTML = data;
-        });
-      }    
-    </script>
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
 
     <style>
-        :root {
-            --accent-red: #ee0d33;
-        }
+      .box {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
 
-        .box {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px;
+      }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
-        }
+      .info_box {
+        background-color: rgba(238, 13, 51, 0.075);
+        border-left: 4px solid var(--accent-red);
+        padding: 15px;
+        font-style: italic;
+      }
 
-        .info_box {
-            background-color: rgba(238, 13, 51, 0.075);
-            border-left: 4px solid var(--accent-red);
-            padding: 15px;
-            font-style: italic;
-        }
+      .country-card {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        border-top: 4px solid var(--primary-blue);
+        border-radius: 12px;
 
-        .country-card {
-            background: #ffffff;
-            border-top: 4px solid var(--primary-blue);
-            border-radius: 12px;
+        overflow: hidden;
+        box-shadow:
+          0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        transition: transform 0.3s ease;
+      }
 
-            
-            overflow: hidden;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            transition: transform 0.3s ease;
-        }
+      .country-card:hover {
+        transform: translateY(-5px);
+      }
 
-        .country-card:hover {
-            transform: translateY(-5px);
-        }
+      .card-image {
+        height: 180px;
+        background-color: #ddd;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
 
-        .card-image {
-            height: 180px;
-            background-color: #ddd;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
+      .card-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        margin: 0px 20px 20px 20px;
+      }
 
-        .card-content {
-            margin: 20px;
-        }
+      .flag-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--accent-red);
+        color: white;
+        padding: 5px 12px;
+        font-weight: bold;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
 
-        .flag-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent-red);
-            color: white;
-            padding: 5px 12px;
-            font-weight: bold;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
+      .stats-row {
+        margin-top: auto; /* Schiebt die Zeile nach ganz unten */
+        border-top: 2px solid #e7e7e7;
+      }
 
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
+      .animated-button {
+        position: relative; /* Wichtig, damit die Linie am Button ausgerichtet wird */
+        background: none;
+        border: none;
+        padding: 10px 0 5 0;
+        color: var(--primary-blue);
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+      }
 
-        .underline {
-            border: none;
-            border-bottom: 3px solid red;
-            border-width: 3px;
-        }
+      /* Die Linie vorbereiten */
+      .animated-button::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0; /* Startbreite: 0 */
+        height: 4px; /* Dicke der Linie */
+        background-color: var(--accent-red);
+        /* Die Animation: Dauer 0.3s, "ease" für sanften Start/Stopp */
+        transition: width 0.3s ease;
+      }
 
-        .underline:hover { /*Platzhalter*/
-            background-color: var(--primary-blue);
-        }
+      /* Der Hover-Zustand */
+      .animated-button:hover::after {
+        width: 100%; /* Endbreite: 100% */
+      }
+
+      .modal {
+        display: none; /* Standardmäßig versteckt */
+        position: fixed;
+        z-index: 1000; /* Ganz oben über allem */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.26); /* Halbdurchsichtig schwarz */
+        backdrop-filter: blur(5px); /* Macht den Hintergrund leicht unscharf */
+      }
+
+      .modal-article {
+        border: none;
+        border-radius: 16px;
+        background-color: white;
+        backdrop-filter: blur(0px);
+        margin: auto;
+        padding: 20px;
+        width: 25%;
+        min-width: 600px;
+        max-width: 800px;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        /* Verhindert, dass das Fenster bei zu viel Text über den Rand rutscht */
+        max-height: 85vh;
+        overflow-y: auto;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.788);
+      }
+
+      .modal-img {
+        width: 100%;
+        border-radius: 12px;
+      }
+
+      .close-button {
+        background-color: var(--accent-red);
+        padding: 10px 20px 10px 20px;
+        border: none;
+        border-radius: 12px;
+        font-size: 18;
+        font-weight: 600;
+        color: white;
+        transition: box-shadow 0.3s ease;
+        transition: background-color 0.3s ease;
+        transition: font-size 0.3s ease;
+      }
+
+      .close-button:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26);
+        background-color: #ee0d33;
+        font-size: 19px;
+      }
     </style>
   </head>
-  <body class="no_margin normal_text_size default_font_family" style="background-color: #f4f7f9">
-      <div id="topBarID"></div>  <!--TopBar--> 
+  <body
+    class="no_margin normal_text_size default_font_family"
+    style="background-color: #f4f7f9"
+  >
+    <div id="topBarID"></div>
+    <!--TopBar-->
 
-      <main class="normal_center">
-        <h1>Immigration in the UK</h1>
-        <div class="box" style="display: flex; flex-direction: row; padding: 30px;">
-            <canvas id="myChart" style="width:100%; max-width: 400px; max-height: 400px;"></canvas>
-            <div style="margin-left: 30px;">
-                <div>
-                    <h1>The 5 largest Groups of Immigrants</h1>
-                    <p>Great Britain has a long History and something just like this
-                        I think. I dont actually know how to write this. I am pretty
-                        shure Max already complained about writing history with an capital H.
-                    </p>
+    <main class="normal_center" style="margin-top: 40px">
+      <div
+        class="box"
+        style="display: flex; flex-direction: row; padding: 30px"
+      >
+        <canvas
+          id="myChart"
+          style="width: 100%; max-width: 400px; max-height: 400px"
+        ></canvas>
+        <div style="margin-left: 30px">
+          <div>
+            <h1>The 5 largest Groups of Immigrants</h1>
+            <p>
+              Great Britain has a large number of immigrants; they are up to 17%
+              of the entire UK population. Compared to other countries
+              worldwide, the UK is ranked fourth overall in immigrants in
+              absolute numbers, with around 11.8 million, just behind Saudi
+              Arabia and 3 million more than Canada. But its still far from the
+              US on first place with 52.4 million immigrants
+            </p>
 
-                    <p class="info_box">
-                        This is an infobox with some info in it. Or at least I hope
-                        so. No but seriously. Okay the second line also seems to be
-                        working
-                    </p>
-                </div>
+            <p class="info_box">
+              The chart shows the top 5 countries with the most immigrants
+              within Great Britain.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="grid" style="margin-top: 40px; margin-bottom: 40px">
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">India</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">India</h3>
+            India ranks first among UK immigrant groups, primarily seeking
+            better career and educational opportunities. Well-integrated and
+            vital to the economy, they excel in medicine and finance. Their
+            cultural influence is profound, with traditions and popular dishes
+            like tikka masala becoming staples of modern British life.
+            <div class="full-description" style="display: none">
+              India is the country with the most immigrants within the United
+              Kingdom. Almost a million came to the UK due to better job/degree
+              opportunities. In the way the British look at them, with a
+              positive look, that’s due to their good integration, and they are
+              a big part of our economy. Most of the immigrants from India are
+              working in a kind of similar field of work, which is most of the
+              time medicine, economics, or the real estate market. So for the
+              Indian, it was important to bring a part of their culture to our
+              country not only with their religion and cultural spirit but also
+              with their diverse cuisine with established food, like tika
+              masala, which is roasted chicken in a spicy tomato sauce, or
+              samosas, which are stuffed fried dumplings with either rice,
+              curry, or meat, and these dishes are part of the Indian culture
+              and, in some way, part of our culture nowadays.
             </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://www.reisen-und-tipps.de/Laender/Polen/Staedte/Bilder/Staedte-Polen.jpg?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">Poland</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">Poland</h3>
+            Poland ranks second among UK immigrant groups, attracted by higher
+            wages and quality of life. Well-integrated and sharing similar
+            European traditions, Polish citizens contribute to sectors like IT
+            and medicine. Their presence is marked by a strong work ethic and
+            popular comfort foods like pierogi.
+            <div class="full-description" style="display: none">
+              Poland is in second place with the most immigrants within the UK;
+              for the Polish, the UK was attractive due to higher wages and a
+              better quality of life, and with entry into the EU, the UK was
+              even more attractive. Although we are no longer part of the EU,
+              the Polish ethnicity is still a big part of our country. With the
+              good integration of the Polish popularity, they are part of our
+              community and are rarely victims of racism. Because they
+              immigrated from Europe, the culture is almost similar to our
+              culture; therefore, they also celebrate classic holidays like
+              Christmas or Easter. So is their working culture; they often
+              execute the same jobs they do or did in Poland, so most of them
+              are working in IT, medicine, or for a transportation company.
+              Especially for the rough work, they need heartwarming comfort
+              food, so the pierogi, a meat-filled dumpling, or a variety of
+              soups like bigos, a soup with steamed sauerkraut, and a
+              wide-ranging selection of meat and sausage.
+            </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://meinewelt-reisen.de/wp-content/uploads/2025/07/Sehenswuerdigkeiten-in-Pakistan-Faisal-Moschee.jpg?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">Pakistan</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">Pakistan</h3>
+            Over half a million Pakistanis live in the UK, driven by colonial
+            ties and post-war labor needs. Today, they contribute significantly
+            to the economy through high-skilled professions and property
+            ownership. Their presence enriches British society through vibrant
+            cultural traditions, religious practices, and popular culinary
+            staples.
+            <div class="full-description" style="display: none">
+              Pakistan is third on the list of the countries that have the most
+              immigrants within the United Kingdom, with slightly more than half
+              a million. Most of the Pakistanis are living in the UK, because
+              particularly the elder generation served in the military in the
+              Second World War. That's due to the British colonies and Pakistan
+              being one of many colonies. When Pakistanis did not serve in the
+              military, then it is most likely they came to the UK to cover the
+              British shortage in laboratories. Therefore, many people were
+              relieved, but few were outraged because immigrants took the
+              workplaces for others. The outrage by others did not bother the
+              Pakistanis, so they now contribute significantly to our economy,
+              and with their often-seen work in the fields of IT, finance,
+              engineering, and medicine, they are the ethnic group with the most
+              house ownership in the UK and own a large number of properties.
+              For the Pakistanis to feel at home, it was important to bring
+              parts of their culture and traditions to the United Kingdom, so
+              they brought Muslim traditions to our country, for example,
+              Ramadan, which is a fasting month and is always on the ninth month
+              of the Islamic lunar calendar. But not only did they bring
+              traditions, but they also brought typical food, like biryani,
+              which is an aromatic rice dish, or a variety of naans, which are
+              grilled flatbreads often eaten with a wide-ranging option of dips
+              and sauces.
+            </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJNcK-MUzMpmK-C8FsOJB__iKNXVSpuXPCqA&s?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">Romania</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">Romania</h3>
+            Romania ranks fourth, with over half a million immigrants seeking
+            better opportunities following EU entry. Primarily working in
+            construction, agriculture, and healthcare, they are essential to the
+            UK workforce. They contribute unique traditions like Mărțișor and
+            traditional dishes such as Sarmale and Mici to British culture.
+            <div class="full-description" style="display: none">
+              Romania is the fourth contender, and with slightly over half a
+              million, they provide the second most immigrants from Europe, and
+              just like the Polish, after the entry into the EU, Romanians also
+              hoped for a better life, better wages, and opportunities in
+              Britain. Due to the regional aspects of Romania, they rarely face
+              stigma because of the history, but nowadays they are essential
+              workers in tertiary sectors, like on construction sites, in
+              agriculture, or in logistics, but not only in physically demanding
+              jobs but also in healthcare or hospitality. Similar to the Polish,
+              they do not have extravagant traditions except for Mărțișor, which
+              is a spring celebration on the first of March. Just like the other
+              countries, the Romanians also brought typical food like Sarmale,
+              which is a cabbage roll, or Mici, a grilled meat roll.
+            </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://www.fodors.com/wp-content/uploads/2019/12/00_BestHistoricalSitesInIreland__HERO_The-Rock-of-Cashel.jpg?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">Ireland</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">Ireland</h3>
+            Ranking fifth, the Irish community grew from historical labor booms
+            into a fully integrated part of British society. Beyond professional
+            success in law and media, they enrich the UK with Gaelic football,
+            St. Patrick’s Day celebrations, and traditional comfort foods like
+            boxty and Irish stew.
+            <div class="full-description" style="display: none">
+              Ireland is a neighbor of ours and completes the Top 5 of the
+              countries with the most immigrants, with slightly less than
+              Romania. The reason for the movement to Great Britain is
+              historically conditioned with the 19th-century post-war
+              construction boom. Back then they faced heavy discrimination, but
+              now they are fully integrated and culturally celebrated. Of
+              course, they brought typical traditions over, like St. Patrick’s
+              Day, and they brought a brand new sport called Gaelic football. It
+              is like rugby and proper football had a baby, so it combines
+              elements of both sports, but they don’t only come to our Great
+              Britain to celebrate holidays and play their sport somewhere else;
+              they also work in multiple work fields like law, media,
+              healthcare, or finance to satisfy their hunger. They also took
+              recipes from their families, like Irish soup or boxty, a potato
+              pancake.
+            </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="country-card">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://www.touristitaly.com/wp-content/uploads/2025/07/amalfi-coast-map-travel-1024x683.jpg?auto=format&fit=crop&w=600&q=80&quot;);
+            "
+          >
+            <span class="flag-badge">Hier kommt vielleicht Italy hin</span>
+          </div>
+          <div class="card-content">
+            <h3 style="color: var(--primary-blue)">
+              Hier kommt vielleicht Italy hin
+            </h3>
+            <div class="full-description" style="display: none">
+              Hier steht der ganz lange, ausformulierte Text über Indien, der
+              nur im Modal erscheinen soll. Du kannst hier auch
+            </div>
+            <div style="height: 8px"></div>
+            <div class="stats-row">
+              <button class="animated-button">Learn More</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <div
+      class="modal default_font_family center"
+      style="font-size: 22px; font-weight: 430"
+      id="modal1"
+    >
+      <article class="modal-article">
+        <img
+          src="https://www.fodors.com/wp-content/uploads/2019/12/00_BestHistoricalSitesInIreland__HERO_The-Rock-of-Cashel.jpg?auto=format&fit=crop&w=600&q=80"
+          class="modal-img"
+          id="modalImg"
+        />
+        <h3 id="modalTitle" style="color: var(--primary-blue)">Italy</h3>
+        <div id="modalContent"></div>
+        <div style="height: 8px"></div>
+        <div class="stats-row">
+          <div style="height: 8px"></div>
+          <button class="close-button">Close</button>
         </div>
-        <div class="grid" style="margin-top: 40px;">
-            <article class="country-card">
-                <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=80');">
-                    <span class="flag-badge">Indien</span>
-                </div>
-                <div class="card-content">
-                    <h3 style="color: var(--primary-blue);">Indien</h3>
-                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
-                    <p>Kulinarisch ist die indische Kultur fest etabliert - Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
-                    <div class="stats-row">
-                        <span>Anteil:</span>
-                        <span>~9.3%</span>
-                    </div>
-                    <div class="stats-row">
-                        <button class="underline">Learn More</button>
-                    </div>
-                </div>
-            </article>
-            
-            <article class="country-card">
-                <div class="card-image" style="background-image: url('https://www.reisen-und-tipps.de/Laender/Polen/Staedte/Bilder/Staedte-Polen.jpg?auto=format&fit=crop&w=600&q=80');">
-                    <span class="flag-badge">Poland</span>
-                </div>
-                <div class="card-content">
-                    <h3 style="color: var(--primary-blue);">Poland</h3>
-                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
-                    <p>Kulinarisch ist die indische Kultur fest etabliert - Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
-                    <div class="stats-row">
-                        <span>Anteil:</span>
-                        <span>~9.3%</span>
-                    </div>
-                    <div class="stats-row">
-                        <button class="underline">Learn More</button>
-                    </div>
-                </div>
-            </article>
-            
-            <article class="country-card">
-                <div class="card-image" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJNcK-MUzMpmK-C8FsOJB__iKNXVSpuXPCqA&s?auto=format&fit=crop&w=600&q=80');">
-                    <span class="flag-badge">Romania</span>
-                </div>
-                <div class="card-content">
-                    <h3 style="color: var(--primary-blue);">Romania</h3>
-                    <p>Indien ist das Land mit den meisten Einwanderern im UK. Die Integration erfolgt oft über hochqualifizierte Sektoren wie Medizin, Wirtschaft und IT.</p>
-                    <p>Kulinarisch ist die indische Kultur fest etabliert - Gerichte wie Chicken Tikka Masala gelten fast als britisches Nationalgericht.</p>
-                    <div class="stats-row">
-                        <span>Anteil:</span>
-                        <span>~9.3%</span>
-                    </div>
-                    <div class="stats-row">
-                        <button class="underline">Learn More</button>
-                    </div>
-                </div>
-            </article>
-            <div class="country-card">Guten Tag</div>
-            <div class="country-card">Hi</div>
-            <div class="country-card">Hey</div>
-        </div>
-      </main>
+      </article>
+    </div>
 
-      <div id="bottomBarID"></div>
-      <!--Code für den Pie Chart (NICHT ANFASSEN!)-->
-      <script>
-        const xValues = ["India", "Poland", "Pakistan", "Romania", "Ireland"];
-        const yValues = [965000, 841000, 654000, 558000, 387000];
-        const barColors = [
-            "#FF9933",
-            "#DC143C",
-            "#01411C",
-            "#002B7F",
-            "#169B62"
-        ];
+    <div id="bottomBarID"></div>
+    <!--Code für den Pie Chart (NICHT ANFASSEN!)-->
+    <script>
+      const xValues = ["India", "Poland", "Pakistan", "Romania", "Ireland"];
+      const yValues = [965000, 841000, 654000, 558000, 387000];
+      const barColors = ["#FF9933", "#DC143C", "#01411C", "#002B7F", "#169B62"];
 
-        const ctx = document.getElementById('myChart');
+      const ctx = document.getElementById("myChart");
 
-        new Chart(ctx, {
-            type: "doughnut",
-            data: {
-                labels: xValues,
-                datasets: [{
-                backgroundColor: barColors,
-                data: yValues
-                }]
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: xValues,
+          datasets: [
+            {
+              backgroundColor: barColors,
+              data: yValues,
             },
-            options: {
-                plugins: {
-                legend: {display:true},
-                title: {
-                    display: true,
-                    text: "The 5 largest Groups of Immigrants",
-                    font: {size:16}
-            }
-            }
-        }
+          ],
+        },
+        options: {
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: false,
+              text: "The 5 largest Groups of Immigrants",
+              font: { size: 16 },
+            },
+          },
+        },
+      });
+    </script>
+
+    <!--Für die Top- und Bottombar-->
+    <script>
+      window.onload = function LoadTopBar() {
+        fetch("topBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("topBarID").innerHTML = data;
+          });
+
+        fetch("bottomBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("bottomBarID").innerHTML = data;
+          });
+
+        // Das ist das Modal Element
+        const modal = document.getElementById("modal1");
+        const closeBtn = document.querySelector(".close-button");
+
+        // Alle "Learn More" Buttons finden
+        const buttons = document.querySelectorAll(".animated-button");
+
+        buttons.forEach((button) => {
+          button.onclick = function () {
+            // Findet den Namen des Landes aus der Karte, in der der Button geklickt wurde
+            const countryName =
+              this.closest(".country-card").querySelector("h3").innerText;
+
+            document.getElementById("modalTitle").innerText =
+              "Details: " + countryName;
+
+            const card = this.closest(".country-card");
+
+            // 3. Das Bild-Element der Karte finden (.card-image)
+            const cardImageDiv = card.querySelector(".card-image");
+
+            // 4. Die Hintergrund-URL aus dem Style auslesen
+            // computedStyle ist sicherer, falls das Style-Attribut komplex ist
+            const style = window.getComputedStyle(cardImageDiv);
+            const bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
+            document.getElementById("modalImg").src = bi;
+
+            const longText = card.querySelector(".full-description").innerHTML;
+            document.getElementById("modalContent").innerHTML = longText;
+
+            modal.style.display = "flex";
+          };
         });
-        </script>
+
+        // Schließen beim Klick auf das X
+        closeBtn.onclick = () => (modal.style.display = "none");
+
+        // Schließen beim Klick irgendwo außerhalb des Fensters
+        window.onclick = (event) => {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      };
+    </script>
   </body>
 </html>
