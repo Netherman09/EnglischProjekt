@@ -1,20 +1,142 @@
 <html>
   <head>
     <title>Cultural Map</title>
-    <link rel="stylesheet" href="style.css">
-    <script>
-      window.onload = function LoadTopBar() {
-        fetch('topBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('topBarID').innerHTML = data;
-        });
-      }    
-    </script>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .map {
+        display: block;
+        height: calc(100vh - 130px);
+        
+      }
+
+
+      .map-button {
+        position: absolute;
+        border: none;
+        border-radius: 12px;
+      }
+
+      .map-button-active {
+        background-color: var(--accent-red);
+        
+      }
+
+      .map-container {
+        position: relative;
+        display: inline-block;
+        transition: all 0.5s ease;
+  flex-shrink: 0;
+      }
+
+      #button1 {
+        top: 10%;
+        right: 20%;
+      }
+
+      #button2 {
+        top: 30%;
+        right: 40%;
+      }
+
+      .white-box {
+        width: 350px; /* Gib der Box eine feste Breite */
+  margin: 20px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+      .no-display {
+        display: none;
+      }
+
+      .info-box-image {
+        width: 100%;
+        border-radius: 12px 12px 0px 0px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.075);
+      }
+    </style>
   </head>
-  <body class="no_margin">
-      <div id="topBarID">     <!--TopBar-->
-      </div>   
-    <h1>Cultural Map</h1>
+  <body class="no_margin" style="background-color: #f4f7f9">
+    <div id="topBarID"></div><!--TopBar-->
+    <div style="width: 100%; display: flex; justify-content: center; align-content: flex-start;">
+      <div id="map-wrapper" class="map-container">
+        <img id="uk-image" src="/Images/UK_Map_1.png" class="map" />
+        <button id="button1" class="map-button">Text
+          <div style="display: none;" class="info-heading">Überschrift 1</div>
+          <div style="display: none;" class="info-content">Text 1</div>
+          <img style="display: none;" class="info-img" src="https://media.gettyimages.com/id/1311256687/de/foto/llanddwyn-leuchtturm-auf-anglesey-wales.jpg?s=612x612&w=gi&k=20&c=HW89oeHTQJDHGt6UE73KUXfgdkT5-Ofi6lnkB-Cqf8g=">
+        </button>
+        <button id="button2" class="map-button">Text
+          <div style="display: none;" class="info-heading">Überschrift 2</div>
+          <div style="display: none;" class="info-content">Text 2</div>
+          <img style="display: none;" class="info-img" src="https://media.istockphoto.com/id/1347665170/de/foto/london-bei-sonnenuntergang.jpg?s=612x612&w=0&k=20&c=oB0zxCW_uvZt4t34Q9QblePN6LqjEfjWOaHcY0Ll-7A=">
+        </button>
+      </div>
+      <div id="info-box" class="no-display white-box">
+        <img id="info-box-img" class="info-box-image" src="">
+        <p id="info-box-heading">Text</p>
+        <p id="info-box-content">Text</p>
+      </div>
+    </div>
+    <button id="slide-button">Slide</button>
+
+    <script>
+      window.onload = function loadElements() {
+        const closeButtons = document.querySelectorAll(".map-button");
+        const imageUK = document.getElementById("map-wrapper");
+        const infoBox = document.getElementById("info-box");
+        closeButtons.forEach((button) => {
+          button.onclick = () => {
+            hasAnyButtonActiveClass = false;
+            closeButtons.forEach((button2) => { if(button2.classList.contains("map-button-active")) hasAnyButtonActiveClass = true;});
+            if (button.classList.contains("map-button-active")) {
+              imageUK.classList.remove("slide");
+              button.classList.remove("map-button-active");
+              infoBox.classList.add("no-display");
+
+            }
+            else if (hasAnyButtonActiveClass) { 
+              closeButtons.forEach((button2) => { button2.classList.remove("map-button-active")});
+              button.classList.add("map-button-active")
+              UpdateInfoBox(button);
+            }
+            else {
+              imageUK.classList.add("slide");
+              button.classList.add("map-button-active");
+              infoBox.classList.remove("no-display");
+              UpdateInfoBox(button);
+            }
+            
+          };
+        });
+
+        fetch("topBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("topBarID").innerHTML = data;
+          });
+      };
+
+      function UpdateInfoBox(button) {
+        const infoBoxHeading = document.getElementById("info-box-heading");
+        infoBoxHeading.innerHTML = button.querySelectorAll(".info-heading")[0].innerHTML;
+
+        const infoBoxContent = document.getElementById("info-box-content");
+        infoBoxContent.innerHTML = button.querySelectorAll(".info-content")[0].innerHTML;
+
+        const infoImg = button.querySelectorAll(".info-img")[0];
+        document.getElementById("info-box-img").src = infoImg.src;
+      }
+    </script>
   </body>
 </html>
