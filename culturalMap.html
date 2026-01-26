@@ -88,7 +88,7 @@
         <p id="info-box-content">Text</p>
       </div>
     </div>
-    <button id="slide-button">Slide</button>
+    <div id="bottomBarID"></div>
 
     <script>
       window.onload = function loadElements() {
@@ -126,6 +126,11 @@
             document.getElementById("topBarID").innerHTML = data;
           });
       };
+      fetch('bottomBar.html')
+        .then(response => response.text())
+        .then(data => {
+        document.getElementById('bottomBarID').innerHTML = data;
+        });
 
       function UpdateInfoBox(button) {
         const infoBoxHeading = document.getElementById("info-box-heading");
