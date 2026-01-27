@@ -1,44 +1,88 @@
 <html>
   <head>
     <title>Englisch Website</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="/Images/Logo_Englisch.png" />
     <script>
       window.onload = function LoadBars() {
-        fetch('topBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('topBarID').innerHTML = data;
-        });
+        fetch("topBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("topBarID").innerHTML = data;
+          });
 
-        fetch('bottomBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('bottomBarID').innerHTML = data;
-        });
-      }
+        fetch("bottomBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("bottomBarID").innerHTML = data;
+          });
+      };
     </script>
 
     <style>
       .main-image {
         background-image: url(https://images5.alphacoders.com/653/653422.jpg);
         background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  /*Tower Bridge Bild: https://images5.alphacoders.com/653/653422.jpg*/
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100%;
+        /*Tower Bridge Bild: https://images5.alphacoders.com/653/653422.jpg*/
         /*Altes Bild: https://images.unsplash.com/photo-1607602274619-4503f0c2444c?fm=jpg&q=60&h=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWslMjBsYW5kc2NhcGV8ZW58MHx8MHx8fDA%3D*/
         height: calc(100vh - 130px);
         /* Das ist der entscheidende Teil: */
-        object-fit: cover; 
+        object-fit: cover;
         /* Optional: Zentriert das Bild beim Croppen */
       }
-      </style>
+
+      .main-image-text {
+        position: absolute;
+        height: calc(100% - 130px);
+        width: 60%;
+        background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.76),
+          #00000000
+        );
+        left: 0;
+        bottom: 0;
+        color: white;
+      }
+
+      .main-text {
+        position: absolute;
+        width: 100%;
+        left: 40%;
+        bottom: 57%;
+        font-size: 60px;
+        font-weight: 750;
+        text-shadow: 3px 3px 4px #000000;
+      }
+    </style>
   </head>
   <body class="no_margin">
-      <div id="topBarID"></div>     <!--TopBar-->
-      <div class="main-image">
-        
+    <div id="topBarID"></div>
+    <!--TopBar-->
+    <div class="main-image">
+      <div class="main-image-text">
+        <h1 class="default_font_family main-text">
+          Explore Britain. <br />
+          Experience Majesty.
+        </h1>
+        <button
+          class="red_button"
+          style="
+            position: absolute;
+            left: 39.5%;
+            bottom: 54%;
+            padding: 12px;
+            width: 200px;
+            font-size: 25px;
+          "
+        >
+          Discover Now
+        </button>
       </div>
-      <div id="bottomBarID"></div>
+    </div>
+    <div id="bottomBarID"></div>
   </body>
 </html>

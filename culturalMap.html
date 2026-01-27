@@ -2,93 +2,248 @@
   <head>
     <title>Cultural Map</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="/Images/Logo_Englisch.png" />
 
     <style>
       .map {
         display: block;
         height: calc(100vh - 130px);
-        
       }
-
 
       .map-button {
         position: absolute;
         border: none;
+
         border-radius: 12px;
+        background-color: var(--primary-blue);
+        color: white;
+        padding: 5px;
+        width: 110px;
+        /* Erlaubt dem SVG, sich hinter den Text zu legen */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: background-color 0.3s ease;
+      }
+
+      .polygon-svg {
+        position: absolute;
+
+        /* Größe und Position wie bei deinem ::after zuvor */
+        left: -70%;
+        bottom: -360%;
+        width: 300px;
+        height: 370px;
+
+        /* Das SVG hinter den Button-Text schieben */
+        z-index: 0;
+        pointer-events: none; /* Klicks gehen durch das SVG zum Button */
+        opacity: 0;
+        transform: scale(0.2) translateZ(-1px); /* Ganz klein und hinter dem Button */
+        transform-origin: center center; /* Punkt, von dem aus es "wächst" */
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .polygon-svg polygon {
+        /* Füllung und Outline */
+        fill: #ff727250;
+        stroke: black; /* Deine Outline-Farbe */
+        stroke-width: 2px; /* Dicke der Outline */
+        stroke-linejoin: round; /* Macht die Ecken schöner */
+
+        transition: all 0.3s ease;
+      }
+
+      .map-button .polygon-svg {
+        display: block;
+      }
+
+      .map-button-active .polygon-svg {
+        opacity: 1;
+        transform: scale(1) translateZ(-1px);
+      }
+
+      /* Optional: Ein etwas anderer Stil beim reinen Hovern (z.B. hellere Linie) */
+      .map-button:hover .polygon-svg {
+        opacity: 1;
+        transform: scale(1) translateZ(-1px);
+        stroke: var(--primary-blue); /* Ändert die Rahmenfarbe beim Hovern */
       }
 
       .map-button-active {
         background-color: var(--accent-red);
-        
       }
 
       .map-container {
         position: relative;
         display: inline-block;
         transition: all 0.5s ease;
-  flex-shrink: 0;
+        flex-shrink: 0;
       }
 
-      #button1 {
-        top: 10%;
-        right: 20%;
-      }
-
-      #button2 {
-        top: 30%;
-        right: 40%;
+      #north-west-button {
+        top: 52%;
+        right: 33%;
       }
 
       .white-box {
-        width: 350px; /* Gib der Box eine feste Breite */
-  margin: 20px;
+        width: 30%; /* Gib der Box eine feste Breite */
+        min-width: 400px;
+        margin: 20px;
+        padding: 15px;
         background-color: white;
         border-radius: 12px;
         box-shadow:
           0 4px 8px 0 rgba(0, 0, 0, 0.2),
           0 6px 20px 0 rgba(0, 0, 0, 0.19);
-          animation: fadeIn 0.5s ease;
+        animation: fadeIn 0.5s ease;
+
+        max-height: calc(100vh - 170px); /* Begrenzt die Höhe der Box */
+        display: flex; /* Nutzt Flexbox für die innere Aufteilung */
+        flex-direction: column; /* Stapelt Bild, Überschrift und Text */
+        overflow: hidden;
+      }
+
+      #info-box-content {
+        /* --- NEUE EIGENSCHAFTEN --- */
+        overflow-y: auto; /* Aktiviert den vertikalen Scrollbalken nur hier */
+        flex-grow: 1; /* Lässt den Text den restlichen Platz füllen */
+        padding-right: 5px; /* Kleiner Abstand zum Scrollbalken */
       }
 
       @keyframes fadeIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
 
       .no-display {
         display: none;
       }
 
       .info-box-image {
-        width: 100%;
+        width: calc(100% + 30px);
+        margin: -15px -15px -15px -15px;
         border-radius: 12px 12px 0px 0px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.075);
       }
     </style>
   </head>
   <body class="no_margin" style="background-color: #f4f7f9">
-    <div id="topBarID"></div><!--TopBar-->
-    <div style="width: 100%; display: flex; justify-content: center; align-content: flex-start;">
+    <div id="topBarID"></div>
+    <!--TopBar-->
+    <div
+      style="
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: flex-start;
+      "
+    >
       <div id="map-wrapper" class="map-container">
         <img id="uk-image" src="/Images/UK_Map_1.png" class="map" />
-        <button id="button1" class="map-button">Text
-          <div style="display: none;" class="info-heading">Überschrift 1</div>
-          <div style="display: none;" class="info-content">Text 1</div>
-          <img style="display: none;" class="info-img" src="https://media.gettyimages.com/id/1311256687/de/foto/llanddwyn-leuchtturm-auf-anglesey-wales.jpg?s=612x612&w=gi&k=20&c=HW89oeHTQJDHGt6UE73KUXfgdkT5-Ofi6lnkB-Cqf8g=">
-        </button>
-        <button id="button2" class="map-button">Text
-          <div style="display: none;" class="info-heading">Überschrift 2</div>
-          <div style="display: none;" class="info-content">Text 2</div>
-          <img style="display: none;" class="info-img" src="https://media.istockphoto.com/id/1347665170/de/foto/london-bei-sonnenuntergang.jpg?s=612x612&w=0&k=20&c=oB0zxCW_uvZt4t34Q9QblePN6LqjEfjWOaHcY0Ll-7A=">
+        <button
+          id="north-west-button"
+          class="map-button default_font_family normal_text_size"
+        >
+          <svg
+            class="polygon-svg"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <polygon
+              points="59,32 58,26 52,25 54,18 48,14 35,20 26,23 24,30 20,38 30,53 36,57 35,73 31,74 33,79 42,90 53,92 68,82 70,73 67,67 66,61 60,55 53,51 59,45 63,38"
+            />
+          </svg>
+          Northwest
+          <div style="display: none" class="info-heading">The Northwest</div>
+          <div style="display: none" class="info-content">
+            The North West is one of the multiple regions of the UK. The North
+            West stretches from the southern border of Scotland to the northern
+            border of the West Midlands. With the Irish Lake in the west and the
+            Pennine Hills in the east, it has the highest point in the region
+            and in all of England, with the Scafell Pike in Cumbria at a
+            significantly high 978 meters or 3208 ft. The northwest covers
+            cities like Manchester, Chester, Lancaster, Liverpool and the Isle
+            of Man. In the North West.are living nearly 7 million people from
+            which 2.5 million are living in the Manchester Area and a bit less
+            are living in the in the Liverpool Area. <br />
+            <h3 style="color: var(--primary-blue)">
+              Why did we Choose this Region?
+            </h3>
+            We as a group chose the region of the Northwest because there is a
+            large cultural diversity in the form of multicultural immigrants
+            that have come into these areas. Therefore the region has a
+            tremendous amount of large cities. Within these cities, there are
+            lots of current and former successful football clubs, like, for
+            example, Liverpool FC and Manchester City and United. We also agreed
+            on an additional humorous reason: the interest and funny Scouse
+            accent.<br />
+            <h3 style="color: var(--primary-blue)">Culture and Traditions</h3>
+            Culture and Traditions in Our Regions The northwest was a central
+            part of the Industrial Revolution, due to its cotton milling,
+            shipbuilding and engineering industries. Therefore, cities like
+            Manchester and Liverpool grew rapidly; this results in a proud
+            working-class culture in this region. They get associated with an
+            emphasis on solidarity and strong trade union traditions. In the
+            aspects about pop culture, the Northwest has a wide spread of
+            well-known names, including The Beatles with songs like “Yellow
+            Submarine”, and Manchester also had rising stars like Oasis and many
+            more. In a worker culture, football also found its way to the
+            northwest. This resulted in the founding of multiple football clubs,
+            for instance, Manchester City, but also their city rival Manchester
+            United, and also Liverpool with their rival Everton only a few yards
+            from their own stadium. But on a bigger scale, the rivalry between
+            Liverpool FC and Manchester United is one of the most important
+            matches for both fan groups. Not only are these factors shaping a
+            region, but other accents also shape a region, just like in the
+            northwest with Scouse, Mancunian, and Cumbrian. They also have a
+            tradition of sarcasm and self-deprecation. The worker class had to
+            tank energy for their hard work, so they have to eat proper food.
+            Lancashire hotpot, which is slow-cooked lamb and onions or Scouse,
+            yes, it’s really in the same way spelt as the accents; therefore,
+            it’s a meat stew associated with the area around Liverpool. But
+            don’t just have “traditional” meals; they also have a strong pub
+            culture and modern Northwest cuisine influenced by the Irish,
+            Caribbean and South Asian cultures.
+          </div>
+          <img
+            style="display: none"
+            class="info-img"
+            src="https://www.uktourismonline.co.uk/north-west-england/images/cheshire.jpg"
+          />
         </button>
       </div>
       <div id="info-box" class="no-display white-box">
-        <img id="info-box-img" class="info-box-image" src="">
-        <p id="info-box-heading">Text</p>
-        <p id="info-box-content">Text</p>
+        <img id="info-box-img" class="info-box-image" src="" />
+        <h1
+          id="info-box-heading"
+          style="
+            color: var(--primary-blue);
+            font-size: 30px;
+            font-weight: 650;
+            padding-top: 15px;
+          "
+          class="default_font_family"
+        >
+          Text
+        </h1>
+        <p id="info-box-content" class="normal_text_size default_font_family">
+          Text
+        </p>
       </div>
     </div>
-    <div id="bottomBarID"></div><!--BottomBar-->
+    <div id="bottomBarID"></div>
+    <!--BottomBar-->
 
     <script>
       window.onload = function loadElements() {
@@ -98,25 +253,26 @@
         closeButtons.forEach((button) => {
           button.onclick = () => {
             hasAnyButtonActiveClass = false;
-            closeButtons.forEach((button2) => { if(button2.classList.contains("map-button-active")) hasAnyButtonActiveClass = true;});
+            closeButtons.forEach((button2) => {
+              if (button2.classList.contains("map-button-active"))
+                hasAnyButtonActiveClass = true;
+            });
             if (button.classList.contains("map-button-active")) {
               imageUK.classList.remove("slide");
               button.classList.remove("map-button-active");
               infoBox.classList.add("no-display");
-
-            }
-            else if (hasAnyButtonActiveClass) { 
-              closeButtons.forEach((button2) => { button2.classList.remove("map-button-active")});
-              button.classList.add("map-button-active")
+            } else if (hasAnyButtonActiveClass) {
+              closeButtons.forEach((button2) => {
+                button2.classList.remove("map-button-active");
+              });
+              button.classList.add("map-button-active");
               UpdateInfoBox(button);
-            }
-            else {
+            } else {
               imageUK.classList.add("slide");
               button.classList.add("map-button-active");
               infoBox.classList.remove("no-display");
               UpdateInfoBox(button);
             }
-            
           };
         });
 
@@ -126,18 +282,20 @@
             document.getElementById("topBarID").innerHTML = data;
           });
       };
-      fetch('bottomBar.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('bottomBarID').innerHTML = data;
+      fetch("bottomBar.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("bottomBarID").innerHTML = data;
         });
 
       function UpdateInfoBox(button) {
         const infoBoxHeading = document.getElementById("info-box-heading");
-        infoBoxHeading.innerHTML = button.querySelectorAll(".info-heading")[0].innerHTML;
+        infoBoxHeading.innerHTML =
+          button.querySelectorAll(".info-heading")[0].innerHTML;
 
         const infoBoxContent = document.getElementById("info-box-content");
-        infoBoxContent.innerHTML = button.querySelectorAll(".info-content")[0].innerHTML;
+        infoBoxContent.innerHTML =
+          button.querySelectorAll(".info-content")[0].innerHTML;
 
         const infoImg = button.querySelectorAll(".info-img")[0];
         document.getElementById("info-box-img").src = infoImg.src;
