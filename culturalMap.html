@@ -71,8 +71,6 @@
         overflow-y: auto; /* Aktiviert den vertikalen Scrollbalken nur hier */
         flex-grow: 1; /* Lässt den Text den restlichen Platz füllen */
         padding-right: 5px; /* Kleiner Abstand zum Scrollbalken */
-        font-size: var(--standard-font-size);
-        font-family: var(--standard-font-family);
       }
 
       /* 1. Grund-Stil für das SVG-Overlay */
@@ -132,7 +130,14 @@
       }
     </style>
   </head>
-  <body class="no_margin" style="background-color: #f4f7f9">
+  <body
+    class="no_margin"
+    style="
+      background-color: #f4f7f9;
+      font-size: var(--standard-text-size);
+      font-family: var(--standard-font-family);
+    "
+  >
     <div id="topBarID"></div>
     <!--TopBar-->
     <div
