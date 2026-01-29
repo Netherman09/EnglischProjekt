@@ -2,9 +2,21 @@
   <head>
     <title>Cultural Map</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/x-icon" href="Images/Logo_Englisch.png" />
+    <link rel="icon" type="image/x-icon" href="images/Logo_Englisch.png" />
 
+    
+  </head>
+  <body class="no_margin">
+    <div id="topBarID"></div>
+    <!--TopBar-->
+    <div class="center"><img src="images/1.png" style="width: auto" /></div>
+    <div class="center"><img src="images/2.png" style="width: auto" /></div>
+    <div class="center"><img src="images/3.png" style="width: auto" /></div>
+
+    <div id="bottomBarID"></div>
     <script>
+      // NICHT ANFASSEN!
+      // ----------- Code für das Laden der TopBar und BottomBar -----------
       window.onload = function LoadBars() {
         fetch("topBar.html")
           .then((response) => response.text())
@@ -17,16 +29,8 @@
           .then((data) => {
             document.getElementById("bottomBarID").innerHTML = data;
           });
+      // ------- Code für das Laden der TopBar und BottomBar zu Ende -------
       };
     </script>
-  </head>
-  <body class="no_margin">
-    <div id="topBarID"></div>
-    <!--TopBar-->
-    <div class="center"><img src="Images/1.png" style="width: auto" /></div>
-    <div class="center"><img src="Images/2.png" style="width: auto" /></div>
-    <div class="center"><img src="Images/3.png" style="width: auto" /></div>
-
-    <div id="bottomBarID"></div>
   </body>
 </html>

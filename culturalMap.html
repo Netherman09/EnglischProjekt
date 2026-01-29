@@ -2,7 +2,7 @@
   <head>
     <title>Cultural Map</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/x-icon" href="Images/Logo_Englisch.png" />
+    <link rel="icon" type="image/x-icon" href="images/Logo_Englisch.png" />
 
     <style>
       .map {
@@ -19,6 +19,8 @@
         color: white;
         padding: 5px;
         width: 110px;
+        font-size: var(--standard-font-size);
+        font-family: var(--standard-font-family);
         /* Erlaubt dem SVG, sich hinter den Text zu legen */
         display: flex;
         justify-content: center;
@@ -29,51 +31,6 @@
         transition: background-color 0.3s ease;
       }
 
-      .polygon-svg {
-        position: absolute;
-
-        /* Größe und Position wie bei deinem ::after zuvor */
-        left: -70%;
-        bottom: -360%;
-        width: 300px;
-        height: 370px;
-
-        /* Das SVG hinter den Button-Text schieben */
-        z-index: 0;
-        pointer-events: none; /* Klicks gehen durch das SVG zum Button */
-        opacity: 0;
-        transform: scale(0.2) translateZ(-1px); /* Ganz klein und hinter dem Button */
-        transform-origin: center center; /* Punkt, von dem aus es "wächst" */
-        pointer-events: none;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-
-      .polygon-svg polygon {
-        /* Füllung und Outline */
-        fill: #ff727250;
-        stroke: black; /* Deine Outline-Farbe */
-        stroke-width: 2px; /* Dicke der Outline */
-        stroke-linejoin: round; /* Macht die Ecken schöner */
-
-        transition: all 0.3s ease;
-      }
-
-      .map-button .polygon-svg {
-        display: block;
-      }
-
-      .map-button-active .polygon-svg {
-        opacity: 1;
-        transform: scale(1) translateZ(-1px);
-      }
-
-      /* Optional: Ein etwas anderer Stil beim reinen Hovern (z.B. hellere Linie) */
-      .map-button:hover .polygon-svg {
-        opacity: 1;
-        transform: scale(1) translateZ(-1px);
-        stroke: var(--primary-blue); /* Ändert die Rahmenfarbe beim Hovern */
-      }
-
       .map-button-active {
         background-color: var(--accent-red);
       }
@@ -81,6 +38,7 @@
       .map-container {
         position: relative;
         display: inline-block;
+        align-self: flex-start;
         transition: all 0.5s ease;
         flex-shrink: 0;
       }
@@ -102,7 +60,7 @@
           0 6px 20px 0 rgba(0, 0, 0, 0.19);
         animation: fadeIn 0.5s ease;
 
-        max-height: calc(100vh - 170px); /* Begrenzt die Höhe der Box */
+        max-height: calc(100vh - 200px); /* Begrenzt die Höhe der Box */
         display: flex; /* Nutzt Flexbox für die innere Aufteilung */
         flex-direction: column; /* Stapelt Bild, Überschrift und Text */
         overflow: hidden;
@@ -113,6 +71,42 @@
         overflow-y: auto; /* Aktiviert den vertikalen Scrollbalken nur hier */
         flex-grow: 1; /* Lässt den Text den restlichen Platz füllen */
         padding-right: 5px; /* Kleiner Abstand zum Scrollbalken */
+        font-size: var(--standard-font-size);
+        font-family: var(--standard-font-family);
+      }
+
+      /* 1. Grund-Stil für das SVG-Overlay */
+      .region-overlay {
+        position: absolute;
+        /* WICHTIG: z-index höher als das Bild (0), aber niedriger als Button (5) */
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        /* Testweise Rahmen, um zu sehen wo die Box liegt (danach löschen) */
+        /* border: 1px solid red; */
+      }
+
+      /* 2. Positionierung EXAKT für Northwest */
+      .northwest-overlay {
+        top: 36%; /* Justiere diese Werte, bis das Polygon passt */
+        left: 50%;
+        width: 27%;
+        height: 32%;
+      }
+
+      /* 3. Sichtbarkeit steuern */
+      #north-west-button:hover ~ .northwest-overlay,
+      #north-west-button.map-button-active ~ .northwest-overlay {
+        opacity: 1;
+      }
+
+      /* 4. Polygon Farben */
+      .region-overlay polygon {
+        fill: rgba(255, 114, 114, 0.4); /* Dein Rot-Ton */
+        stroke: black;
+        stroke-width: 1px;
       }
 
       @keyframes fadeIn {
@@ -149,103 +143,49 @@
         align-content: flex-start;
       "
     >
+      <!--Karte-->
       <div id="map-wrapper" class="map-container">
-        <img id="uk-image" src="Images/UK_Map_1.png" class="map" />
-        <button
-          id="north-west-button"
-          class="map-button default_font_family normal_text_size"
+        <img id="uk-image" src="images/UK_Map_1.png" class="map" />
+        <!--Northwest Button auf der Karte-->
+        <button id="north-west-button" class="map-button">Northwest</button>
+        <!--Northwest Outline auf der Karte; Wichtig: Muss immer unter dem Button sein-->
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          class="region-overlay northwest-overlay"
         >
-          <svg
-            class="polygon-svg"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-          >
-            <polygon
-              points="59,32 58,26 52,25 54,18 48,14 35,20 26,23 24,30 20,38 30,53 36,57 35,73 31,74 33,79 42,90 53,92 68,82 70,73 67,67 66,61 60,55 53,51 59,45 63,38"
-            />
-          </svg>
-          Northwest
-          <div style="display: none" class="info-heading">The Northwest</div>
-          <div style="display: none" class="info-content">
-            The North West is one of the multiple regions of the UK. The North
-            West stretches from the southern border of Scotland to the northern
-            border of the West Midlands. With the Irish Lake in the west and the
-            Pennine Hills in the east, it has the highest point in the region
-            and in all of England, with the Scafell Pike in Cumbria at a
-            significantly high 978 meters or 3208 ft. The northwest covers
-            cities like Manchester, Chester, Lancaster, Liverpool and the Isle
-            of Man. In the North West.are living nearly 7 million people from
-            which 2.5 million are living in the Manchester Area and a bit less
-            are living in the in the Liverpool Area. <br />
-            <h3 style="color: var(--primary-blue)">
-              Why did we Choose this Region?
-            </h3>
-            We as a group chose the region of the Northwest because there is a
-            large cultural diversity in the form of multicultural immigrants
-            that have come into these areas. Therefore the region has a
-            tremendous amount of large cities. Within these cities, there are
-            lots of current and former successful football clubs, like, for
-            example, Liverpool FC and Manchester City and United. We also agreed
-            on an additional humorous reason: the interest and funny Scouse
-            accent.<br />
-            <h3 style="color: var(--primary-blue)">Culture and Traditions</h3>
-            Culture and Traditions in Our Regions The northwest was a central
-            part of the Industrial Revolution, due to its cotton milling,
-            shipbuilding and engineering industries. Therefore, cities like
-            Manchester and Liverpool grew rapidly; this results in a proud
-            working-class culture in this region. They get associated with an
-            emphasis on solidarity and strong trade union traditions. In the
-            aspects about pop culture, the Northwest has a wide spread of
-            well-known names, including The Beatles with songs like “Yellow
-            Submarine”, and Manchester also had rising stars like Oasis and many
-            more. In a worker culture, football also found its way to the
-            northwest. This resulted in the founding of multiple football clubs,
-            for instance, Manchester City, but also their city rival Manchester
-            United, and also Liverpool with their rival Everton only a few yards
-            from their own stadium. But on a bigger scale, the rivalry between
-            Liverpool FC and Manchester United is one of the most important
-            matches for both fan groups. Not only are these factors shaping a
-            region, but other accents also shape a region, just like in the
-            northwest with Scouse, Mancunian, and Cumbrian. They also have a
-            tradition of sarcasm and self-deprecation. The worker class had to
-            tank energy for their hard work, so they have to eat proper food.
-            Lancashire hotpot, which is slow-cooked lamb and onions or Scouse,
-            yes, it’s really in the same way spelt as the accents; therefore,
-            it’s a meat stew associated with the area around Liverpool. But
-            don’t just have “traditional” meals; they also have a strong pub
-            culture and modern Northwest cuisine influenced by the Irish,
-            Caribbean and South Asian cultures.
-          </div>
-          <img
-            style="display: none"
-            class="info-img"
-            src="https://www.uktourismonline.co.uk/north-west-england/images/cheshire.jpg"
+          <polygon
+            points="59,32 58,26 52,25 54,18 48,14 35,20 26,23 24,30 20,38 30,53 36,57 35,73 31,74 33,79 42,90 53,92 68,82 70,73 67,67 66,61 60,55 53,51 59,45 63,38"
           />
-        </button>
+        </svg>
       </div>
+
+      <!--Infobox rechts-->
       <div id="info-box" class="no-display white-box">
         <img id="info-box-img" class="info-box-image" src="" />
-        <h1
+        <div
           id="info-box-heading"
           style="
             color: var(--primary-blue);
             font-size: 30px;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            font-family: var(--standard-font-family);
             font-weight: 650;
-            padding-top: 15px;
           "
-          class="default_font_family"
         >
-          Text
-        </h1>
-        <p id="info-box-content" class="normal_text_size default_font_family">
-          Text
-        </p>
+          <!--Hier wird die Überschrift der Infobox geladen-->
+        </div>
+        <div id="info-box-content">
+          <!--Hier wird der Haupttext reingeladen-->
+        </div>
       </div>
     </div>
-    <div id="bottomBarID"></div>
     <!--BottomBar-->
+    <div id="bottomBarID"></div>
 
     <script>
+      // Lädt die funktionalität der Region-Buttons am Anfang
       window.onload = function loadElements() {
         const closeButtons = document.querySelectorAll(".map-button");
         const imageUK = document.getElementById("map-wrapper");
@@ -266,16 +206,47 @@
                 button2.classList.remove("map-button-active");
               });
               button.classList.add("map-button-active");
-              UpdateInfoBox(button);
+              UpdateInfoBox();
             } else {
               imageUK.classList.add("slide");
               button.classList.add("map-button-active");
               infoBox.classList.remove("no-display");
-              UpdateInfoBox(button);
+              UpdateInfoBox();
             }
           };
         });
 
+        // Wenn die Textbox Rechts geöffnet oder eine andere Region ausgewählt wird, wird hier der Inhalt geändert
+        async function UpdateInfoBox() {
+          // cultureMapData.json in ein JSON Objekt umwandeln damit der Code damit arbeiten kann
+          const response = await fetch("data/cultureMapData.json");
+          const data = await response.json();
+
+          // Geht alle Regionen durch
+          data.regions.forEach((region) => {
+            // Bisher funktioniert der Code nur für die Northwest Region
+            if (region.id === "northwest") {
+              const infoBoxHeading =
+                document.getElementById("info-box-heading");
+              infoBoxHeading.innerHTML = region.name;
+              const infoBoxContent =
+                document.getElementById("info-box-content");
+              infoBoxContent.innerHTML = "";
+              document.getElementById("info-box-img").src = region.image;
+
+              // Die ganzen Abschnitte vom Haupttext generieren
+              region.sections.forEach((section) => {
+                const cardHTML = `<h3 style="color: var(--primary-blue)">${section.heading}</h3>
+                ${section.content}<br />`;
+
+                infoBoxContent.innerHTML += cardHTML;
+              });
+            }
+          });
+        }
+
+        // NICHT ANFASSEN!
+        // ----------- Code für das Laden der TopBar und BottomBar -----------
         fetch("topBar.html")
           .then((response) => response.text())
           .then((data) => {
@@ -287,19 +258,7 @@
         .then((data) => {
           document.getElementById("bottomBarID").innerHTML = data;
         });
-
-      function UpdateInfoBox(button) {
-        const infoBoxHeading = document.getElementById("info-box-heading");
-        infoBoxHeading.innerHTML =
-          button.querySelectorAll(".info-heading")[0].innerHTML;
-
-        const infoBoxContent = document.getElementById("info-box-content");
-        infoBoxContent.innerHTML =
-          button.querySelectorAll(".info-content")[0].innerHTML;
-
-        const infoImg = button.querySelectorAll(".info-img")[0];
-        document.getElementById("info-box-img").src = infoImg.src;
-      }
+      // ------- Code für das Laden der TopBar und BottomBar zu Ende -------
     </script>
   </body>
 </html>

@@ -1,0 +1,23 @@
+{
+    "regions": [
+        {
+            "id": "northwest",
+            "name": "Northwest",
+            "image": "https://www.uktourismonline.co.uk/north-west-england/images/cheshire.jpg",
+            "sections": [
+                {
+                    "heading": "General Information",
+                    "content": "The North West is one of the multiple regions of the UK. The North West stretches from the southern border of Scotland to the northern border of the West Midlands. With the Irish Lake in the west and the Pennine Hills in the east, it has the highest point in the region and in all of England, with the Scafell Pike in Cumbria at a significantly high 978 meters or 3208 ft. The northwest covers cities like Manchester, Chester, Lancaster, Liverpool and the Isle of Man. In the North West.are living nearly 7 million people  from which  2.5 million are living in the Manchester Area and a bit less are living in the in the Liverpool Area."
+                },
+                {
+                    "heading": "Why did we Choose this Region",
+                    "content": "We as a group chose the region of the Northwest because there is a large cultural diversity in the form of multicultural immigrants that have come into these areas. Therefore the region has a tremendous amount of large cities. Within these cities, there are lots of current and former successful football clubs, like, for example, Liverpool FC and Manchester City and United. We also agreed on an additional humorous reason: the interest and funny Scouse accent."
+                },
+                {
+                    "heading": "Culture and Traditions",
+                    "content": "The northwest was a central part of the Industrial Revolution, due to its cotton milling, shipbuilding and engineering industries. Therefore, cities like Manchester and Liverpool grew rapidly; this results in a proud working-class culture in this region. They get associated with an emphasis on solidarity and strong trade union traditions. In the aspects about pop culture, the Northwest has a wide spread of well-known names, including The Beatles with songs like “Yellow Submarine”, and Manchester also had rising stars like Oasis and many more. In a worker culture, football also found its way to the northwest. This resulted in the founding of multiple football clubs, for instance, Manchester City, but also their city rival Manchester United, and also Liverpool with their rival Everton only a few yards from their own stadium. But on a bigger scale, the rivalry between Liverpool FC and Manchester United is one of the most important matches for both fan groups. Not only are these factors shaping a region, but other accents also shape a region, just like in the northwest with Scouse, Mancunian, and Cumbrian. They also have a tradition of sarcasm and self-deprecation. The worker class had to tank energy for their hard work, so they have to eat proper food. Lancashire hotpot, which is slow-cooked lamb and onions or Scouse, yes, it’s really in the same way spelt as the accents; therefore, it’s a meat stew associated with the area around Liverpool. But don’t just have “traditional” meals; they also have a strong pub culture and modern Northwest cuisine influenced by the Irish, Caribbean and South Asian cultures."
+                }
+            ]
+        }
+    ]
+}
