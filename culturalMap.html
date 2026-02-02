@@ -13,12 +13,10 @@
       .map-button {
         position: absolute;
         border: none;
-
-        border-radius: 12px;
-        background-color: var(--primary-blue);
-        color: white;
+        background-color: transparent;
         padding: 5px;
-        width: 110px;
+        height: 55px;
+        width: 55px;
         font-size: var(--standard-font-size);
         font-family: var(--standard-font-family);
         /* Erlaubt dem SVG, sich hinter den Text zu legen */
@@ -31,8 +29,45 @@
         transition: background-color 0.3s ease;
       }
 
+      .map-button svg {
+        z-index: 2;
+        transition: transform 0.3s ease;
+      }
+
+      .map-button:hover svg {
+        transform: translateY(-20px);
+      }
+
+      .map-button::after {
+        content: var(--region-name);
+        position: absolute;
+        background-color: var(--primary-blue);
+        color: white;
+        white-space: nowrap;
+        border-radius: 12px;
+        width: 100px;
+        padding: 3px;
+        opacity: 0;
+        transform: translateY(30px);
+        /*Vorhang öffnen animation - anfangspose*/
+        clip-path: inset(0 50% 0 50%);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease,
+          /* Vorhang öffnen animation transition ablauf*/ clip-path 0.4s
+            cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+      }
+
+      .map-button:hover::after {
+        opacity: 1;
+        transform: translateY(20px); /* Text gleitet sanft von unten rein */
+        /*Vorhang öffnen animation - endpose*/
+        clip-path: inset(0 0% 0 0%);
+      }
+
       .map-button-active {
-        background-color: var(--accent-red);
+        background-color: transparent;
       }
 
       .map-container {
@@ -41,11 +76,6 @@
         align-self: flex-start;
         transition: all 0.5s ease;
         flex-shrink: 0;
-      }
-
-      #north-west-button {
-        top: 52%;
-        right: 33%;
       }
 
       .white-box {
@@ -86,17 +116,9 @@
         /* border: 1px solid red; */
       }
 
-      /* 2. Positionierung EXAKT für Northwest */
-      .northwest-overlay {
-        top: 36%; /* Justiere diese Werte, bis das Polygon passt */
-        left: 50%;
-        width: 27%;
-        height: 32%;
-      }
-
       /* 3. Sichtbarkeit steuern */
-      #north-west-button:hover ~ .northwest-overlay,
-      #north-west-button.map-button-active ~ .northwest-overlay {
+      .map-button:hover + .region-overlay,
+      .map-button.map-button-active + .region-overlay {
         opacity: 1;
       }
 
@@ -104,7 +126,7 @@
       .region-overlay polygon {
         fill: rgba(255, 114, 114, 0.4); /* Dein Rot-Ton */
         stroke: black;
-        stroke-width: 1px;
+        stroke-width: 2px;
       }
 
       @keyframes fadeIn {
@@ -151,18 +173,7 @@
       <!--Karte-->
       <div id="map-wrapper" class="map-container">
         <img id="uk-image" src="images/UK_Map_1.png" class="map" />
-        <!--Northwest Button auf der Karte-->
-        <button id="north-west-button" class="map-button">Northwest</button>
-        <!--Northwest Outline auf der Karte; Wichtig: Muss immer unter dem Button sein-->
-        <svg
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          class="region-overlay northwest-overlay"
-        >
-          <polygon
-            points="59,32 58,26 52,25 54,18 48,14 35,20 26,23 24,30 20,38 30,53 36,57 35,73 31,74 33,79 42,90 53,92 68,82 70,73 67,67 66,61 60,55 53,51 59,45 63,38"
-          />
-        </svg>
+        <!--Hier werden die Northwest Buttons auf der Karte generiert-->
       </div>
 
       <!--Infobox rechts-->
@@ -192,6 +203,66 @@
     <script>
       // Lädt die funktionalität der Region-Buttons am Anfang
       window.onload = function loadElements() {
+        // Lädt die Buttons in den verschiedenen Regionen
+        loadButtons();
+
+        // NICHT ANFASSEN!
+        // ----------- Code für das Laden der TopBar und BottomBar -----------
+        fetch("topBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("topBarID").innerHTML = data;
+          });
+
+        fetch("bottomBar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("bottomBarID").innerHTML = data;
+          });
+        // ------- Code für das Laden der TopBar und BottomBar zu Ende -------
+      };
+
+      var response;
+      var data;
+      async function loadButtons() {
+        response = await fetch("data/cultureMapData.json");
+        data = await response.json();
+        const buttonParent = document.getElementById("map-wrapper");
+
+        data.regions.forEach((region) => {
+          const mapButtonHTML = `<button id="${region.id}" class="map-button" style="top:${region.map.topPositionText}; right:${region.map.rightPositionText}; --region-name:'${region.name}';">
+          <svg viewBox="0 0 90 90" width="100%" height="100%">
+            <path
+              d="M 45 90 c -1.415 0 -2.725 -0.748 -3.444 -1.966 l -4.385 -7.417 C 28.167 
+              65.396 19.664 51.02 16.759 45.189 c -2.112 -4.331 -3.175 -8.955 -3.175 -13.773 
+              C 13.584 14.093 27.677 0 45 0 c 17.323 0 31.416 14.093 31.416 31.416 c 0 4.815 
+              -1.063 9.438 -3.157 13.741 c -0.025 0.052 -0.053 0.104 -0.08 0.155 c -2.961 5.909 
+              -11.41 20.193 -20.353 35.309 l -4.382 7.413 C 47.725 89.252 46.415 90 45 90 z"
+              style="fill: rgb(200, 16, 46)"
+            />
+            <path
+              d="M 45 45.678 c -8.474 0 -15.369 -6.894 -15.369 -15.368 S 36.526 14.941 
+              45 14.941 c 8.474 0 15.368 6.895 15.368 15.369 S 53.474 45.678 45 45.678 z"
+              style="fill: rgb(255, 255, 255)"
+            />
+          </svg>
+        </button>
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          class="region-overlay"
+          style="top:${region.map.svg.topPosition}; right:${region.map.svg.rightPosition}; width:${region.map.svg.width}; height:${region.map.svg.height};"
+        >
+          <polygon
+            points="${region.map.points}"
+          />
+        </svg>`;
+          buttonParent.innerHTML += mapButtonHTML;
+        });
+        addButtonFunctionality();
+      }
+
+      function addButtonFunctionality() {
         const closeButtons = document.querySelectorAll(".map-button");
         const imageUK = document.getElementById("map-wrapper");
         const infoBox = document.getElementById("info-box");
@@ -211,59 +282,44 @@
                 button2.classList.remove("map-button-active");
               });
               button.classList.add("map-button-active");
-              UpdateInfoBox();
+              UpdateInfoBox(button);
             } else {
               imageUK.classList.add("slide");
               button.classList.add("map-button-active");
               infoBox.classList.remove("no-display");
-              UpdateInfoBox();
+              UpdateInfoBox(button);
             }
           };
         });
+      }
 
-        // Wenn die Textbox Rechts geöffnet oder eine andere Region ausgewählt wird, wird hier der Inhalt geändert
-        async function UpdateInfoBox() {
-          // cultureMapData.json in ein JSON Objekt umwandeln damit der Code damit arbeiten kann
-          const response = await fetch("data/cultureMapData.json");
-          const data = await response.json();
+      // Wenn die Textbox Rechts geöffnet oder eine andere Region ausgewählt wird, wird hier der Inhalt geändert
+      async function UpdateInfoBox(button) {
+        // cultureMapData.json in ein JSON Objekt umwandeln damit der Code damit arbeiten kann
 
-          // Geht alle Regionen durch
-          data.regions.forEach((region) => {
-            // Bisher funktioniert der Code nur für die Northwest Region
-            if (region.id === "northwest") {
-              const infoBoxHeading =
-                document.getElementById("info-box-heading");
-              infoBoxHeading.innerHTML = region.name;
-              const infoBoxContent =
-                document.getElementById("info-box-content");
-              infoBoxContent.innerHTML = "";
-              document.getElementById("info-box-img").src = region.image;
+        // Geht alle Regionen durch
+        data.regions.forEach((region) => {
+          // Bisher funktioniert der Code nur für die Northwest Region
+          if (region.id === button.id) {
+            const infoBoxHeading = document.getElementById("info-box-heading");
+            infoBoxHeading.innerHTML = region.name;
+            const infoBoxContent = document.getElementById("info-box-content");
+            infoBoxContent.innerHTML = "";
+            document.getElementById("info-box-img").src = region.image;
 
-              // Die ganzen Abschnitte vom Haupttext generieren
-              region.sections.forEach((section) => {
-                const cardHTML = `<h3 style="color: var(--primary-blue)">${section.heading}</h3>
+            // Die ganzen Abschnitte vom Haupttext generieren
+            region.sections.forEach((section) => {
+              const cardHTML = `<h3 style="color: var(--primary-blue)">${section.heading}</h3>
                 ${section.content}<br />`;
 
-                infoBoxContent.innerHTML += cardHTML;
-              });
-            }
-          });
-        }
-
-        // NICHT ANFASSEN!
-        // ----------- Code für das Laden der TopBar und BottomBar -----------
-        fetch("topBar.html")
-          .then((response) => response.text())
-          .then((data) => {
-            document.getElementById("topBarID").innerHTML = data;
-          });
-      };
-      fetch("bottomBar.html")
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("bottomBarID").innerHTML = data;
+              infoBoxContent.innerHTML += cardHTML;
+            });
+          }
+          const mapElement = document.getElementById("info-box-content");
+          // Scollt beim langen Text rechts wieder nach oben wenn man auf einen Button auf der Karte klickt
+          mapElement.scrollTop = 0;
         });
-      // ------- Code für das Laden der TopBar und BottomBar zu Ende -------
+      }
     </script>
   </body>
 </html>
