@@ -9,8 +9,8 @@
     <style>
       .normal_center {
         margin: auto;
-        width: 70%;
-        max-width: 1100px;
+        width: 90%;
+        max-width: 1150px;
         min-width: 600px;
       }
 
@@ -20,12 +20,6 @@
         box-shadow:
           0 4px 8px 0 rgba(0, 0, 0, 0.2),
           0 6px 20px 0 rgba(0, 0, 0, 0.19);
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 30px;
       }
 
       .info_box {
@@ -173,6 +167,103 @@
         background-color: #ee0d33;
         font-size: 19px;
       }
+
+      /* Die @media abschnitte steuern das Aussehen der Seite bei den jeweiligen Bildschirm größen damit die Seite auch auf dem Smartphone benutzbar ist */
+      @media (max-width: 1000px) {
+        .topBoxOrder {
+          display: grid;
+          grid-template-columns: auto;
+          grid-template-rows: 120px auto auto auto;
+        }
+
+        .grid_info_box {
+          grid-row-start: 4;
+          grid-row-end: 4;
+          margin-left: 30px;
+        }
+
+        .grid_chart {
+          grid-row-start: 2;
+          grid-row-end: 2;
+          justify-self: center;
+        }
+
+        .grid_heading {
+          grid-row-start: 1;
+          grid-row-end: 1;
+          margin-left: 30px;
+          margin-top: 0px;
+        }
+
+        /* Das ist das Grid unten (also die Karten der Länder) */
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr; /* Auf dem Handy nur zwei Spalten*/
+          gap: 30px;
+        }
+      }
+
+      @media (min-width: 1001px) {
+        .topBoxOrder {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-template-rows: 100px auto auto;
+        }
+
+        .grid_info_box {
+          grid-column-start: 1;
+          grid-column-end: 3;
+          margin-left: 30px;
+        }
+
+        .grid_chart {
+          grid-row-start: 1;
+          grid-row-end: 3;
+        }
+
+        .grid_heading {
+          margin-left: 30px;
+          margin-top: 0px;
+        }
+
+        /* Das ist das Grid unten (also die Karten der Länder) */
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr; /* Breite Bildschirme haben drei Spalten*/
+          gap: 30px;
+        }
+      }
+
+      @media (min-width: 1251px) {
+        .topBoxOrder {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-template-rows: 100px auto auto;
+        }
+
+        .grid_info_box {
+          grid-column-start: 2;
+          grid-column-end: 2;
+          margin-left: 30px;
+        }
+
+        .grid_chart {
+          grid-row-start: 1;
+          grid-row-end: 4;
+        }
+
+        .grid_heading {
+          margin-left: 30px;
+          margin-top: 0px;
+        }
+
+        /* Das ist das Grid unten (also die Karten der Länder) */
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr; /* Breite Bildschirme haben drei Spalten*/
+          gap: 30px;
+        }
+      }
     </style>
   </head>
   <body
@@ -188,32 +279,27 @@
 
     <!--Die obere Box mit dem Pie-Chart und so-->
     <main class="normal_center" style="margin-top: 40px">
-      <div
-        class="box"
-        style="display: flex; flex-direction: row; padding: 30px"
-      >
+      <div class="box topBoxOrder" style="padding: 30px">
         <canvas
           id="myChart"
+          class="grid_chart"
           style="width: 100%; max-width: 400px; max-height: 400px"
         ></canvas>
+        <h1 class="grid_heading">The 5 largest Groups of Immigrants</h1>
         <div style="margin-left: 30px">
-          <div>
-            <h1>The 5 largest Groups of Immigrants</h1>
-            <p>
-              Great Britain has a large number of immigrants; they are up to 17%
-              of the entire UK population. Compared to other countries
-              worldwide, the UK is ranked fourth overall in immigrants in
-              absolute numbers, with around 11.8 million, just behind Saudi
-              Arabia and 3 million more than Canada. But its still far from the
-              US on first place with 52.4 million immigrants
-            </p>
-
-            <p class="info_box">
-              The chart shows the top 5 countries with the most immigrants
-              within Great Britain.
-            </p>
-          </div>
+          <p>
+            Great Britain has a large number of immigrants; they are up to 17%
+            of the entire UK population. Compared to other countries worldwide,
+            the UK is ranked fourth overall in immigrants in absolute numbers,
+            with around 11.8 million, just behind Saudi Arabia and 3 million
+            more than Canada. But its still far from the US on first place with
+            52.4 million immigrants
+          </p>
         </div>
+        <p class="info_box grid_info_box">
+          The chart shows the top 5 countries with the most immigrants within
+          Great Britain.
+        </p>
       </div>
 
       <!--Das Grid für die Artikel-->

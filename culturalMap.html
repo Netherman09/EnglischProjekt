@@ -150,6 +150,43 @@
         border-radius: 12px 12px 0px 0px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.075);
       }
+
+      /* Die @media abschnitte steuern das Aussehen der Seite bei den jeweiligen Bildschirm größen damit die Seite auch auf dem Smartphone benutzbar ist */
+      @media (max-width: 1250px) {
+        .stack_boxes {
+          flex-direction: column;
+          justify-self: center;
+        }
+
+        .white-box {
+          width: 90%; /* Gib der Box eine feste Breite */
+          min-width: 400px;
+          min-height: fit-content;
+          margin: 20px;
+          padding: 15px;
+          background-color: white;
+          border-radius: 12px;
+          box-shadow:
+            0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          animation: fadeIn 0.5s ease;
+
+          display: flex; /* Nutzt Flexbox für die innere Aufteilung */
+          flex-direction: column; /* Stapelt Bild, Überschrift und Text */
+          overflow: hidden;
+        }
+
+        .no-display {
+          display: none;
+        }
+      }
+
+      @media (min-width: 1251px) {
+        .stack_boxes {
+          flex-direction: row;
+          justify-self: center;
+        }
+      }
     </style>
   </head>
   <body
@@ -163,8 +200,9 @@
     <div id="topBarID"></div>
     <!--TopBar-->
     <div
+      class="stack_boxes"
       style="
-        width: 100%;
+        width: fit-content;
         display: flex;
         justify-content: center;
         align-content: flex-start;
