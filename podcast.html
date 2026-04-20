@@ -52,17 +52,30 @@
       .main-text {
         font-family: var(--standard-font-family);
       }
+
+      .normal_center {
+        margin: auto;
+        width: 90%;
+        max-width: 1150px;
+        min-width: 600px;
+      }
     </style>
   </head>
   <body class="no_margin">
     <div id="topBarID"></div>
     <!--TopBar-->
-    <figure>
-      <figcaption class="main-text">
-        Listen to our newest Episode of our Podcast!
-      </figcaption>
-      <audio controls src="audio/History_Unleashed_Podcast.mp3"></audio>
-    </figure>
+    <main class="normal_center">
+      <h3 class="main-text">
+        History Unleashed Episode 5: The absurd Story of how Britain robbed the
+        entire World
+      </h3>
+      <figure>
+        <figcaption class="main-text">
+          Listen to our newest Episode of our Podcast!
+        </figcaption>
+        <audio controls src="audio/History_Unleashed_Podcast.mp3"></audio>
+      </figure>
+    </main>
 
     <div id="bottomBarID"></div>
   </body>
